@@ -1,21 +1,28 @@
 /*
  * @lc app=leetcode.cn id=27 lang=rust
  *
- * [27] 移除元素
+ * [27] 移除元素 方法二 优化后的向中靠拢的双指针
  */
 
 // @lc code=start
 impl Solution {
     pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
-        // 快慢指针即可
-        let mut slowIndex: usize = 0;
-        for pos in (0..nums.len()) {
-            if nums[pos] != val {
-                nums[slowIndex] = nums[pos];
-                slowIndex += 1;
+        // 左开右闭
+        let mut left: usize = 0;
+        let mut right: usize = nums.len();
+        while left < right {
+            if nums[right - 1] == val {
+                right -= 1;
+            } else if nums[left] != val {
+                left += 1;
+            } else {
+                nums[left] = nums[right - 1];
+                left += 1;
+                right -= 1;
             }
         }
-        return slowIndex as i32;
+        return left as i32;
     }
 }
+
 // @lc code=end
